@@ -41,7 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Figure\Circle.cs" />
+    <Compile Include="Figure\Cross.cs" />
+    <Compile Include="Figure\FigureType.cs" />
+    <Compile Include="Figure\IFigure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
