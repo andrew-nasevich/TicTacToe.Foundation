@@ -1,6 +1,8 @@
-﻿namespace TicTacToe.Foundation.Figure
+﻿using TicTacToe.Foundation.Interfaces;
+
+namespace TicTacToe.Foundation.Figures
 {
-    class Cross : IFigure
+    public class Cross : IFigure
     {
         public FigureType Type { get; }
 
