@@ -42,8 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cell\Cell.cs" />
-    <Compile Include="Cell\ICell.cs" />
-    <Compile Include="Cell\ICellIternal.cs" />
+    <Compile Include="Interfaces\ICell.cs" />
+    <Compile Include="Interfaces\ICellInternal.cs" />
     <Compile Include="Figures\Circle.cs" />
     <Compile Include="Figures\Cross.cs" />
     <Compile Include="Figures\FigureType.cs" />

@@ -1,18 +1,35 @@
-﻿using TicTacToe.Foundation.Figure;
+﻿using System;
+using TicTacToe.Foundation.Interfaces;
 
 namespace TicTacToe.Foundation.Cell
 {
-    class Cell : ICellIternal
+    public class Cell : ICellInternal
     {
         public int Column { get; }
 
         public int Row { get; }
 
+        public IFigure Figure { get; private set; }
 
-        public IFigure Figure { get; set; }
+        public bool IsEmpty
+        { 
+            get
+            { 
+                return Figure == null; 
+            }
+        }
 
 
-        public Cell(int row, int column) 
+        public void SetFigure(IFigure figure)
+        {
+            if (!IsEmpty)
+                throw new ArgumentException("The cell is already filled");
+
+            Figure = figure;
+        }
+
+
+        public Cell(int row, int column)
         {
             Row = row;
             Column = column;
