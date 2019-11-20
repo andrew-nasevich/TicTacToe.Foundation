@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe.Foundation.Interfaces
 {
-    interface ICellInternal : ICell
+    internal interface ICellInternal : ICell
     {
         void SetFigure(IFigure figure);
     }

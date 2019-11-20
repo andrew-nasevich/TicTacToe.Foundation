@@ -11,28 +11,24 @@ namespace TicTacToe.Foundation.Cell
 
         public IFigure Figure { get; private set; }
 
-        public bool IsEmpty
-        { 
-            get
-            { 
-                return Figure == null; 
-            }
-        }
-
-
-        public void SetFigure(IFigure figure)
-        {
-            if (!IsEmpty)
-                throw new ArgumentException("The cell is already filled");
-
-            Figure = figure;
-        }
+        public bool IsEmpty => Figure == null; 
 
 
         public Cell(int row, int column)
         {
             Row = row;
             Column = column;
+        }
+         
+
+        void ICellInternal.SetFigure(IFigure figure)
+        {
+            if (!IsEmpty)
+            {
+                throw new InvalidOperationException("The cell is already filled");
+            }
+
+            Figure = figure;
         }
     }
 }
