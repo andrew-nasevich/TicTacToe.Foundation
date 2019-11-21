@@ -5,9 +5,9 @@ namespace TicTacToe.Foundation.Cells
 {
     public class Cell : ICellInternal
     {
-        public int Column { get; }
-
         public int Row { get; }
+
+        public int Column { get; }
 
         public IFigure Figure { get; private set; }
 
