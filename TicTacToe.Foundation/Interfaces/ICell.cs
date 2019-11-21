@@ -2,9 +2,9 @@
 {
     public interface ICell
     {
-        int Column { get; }
-
         int Row { get; }
+
+        int Column { get; }
 
         IFigure Figure { get; }
 
