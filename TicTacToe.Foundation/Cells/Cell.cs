@@ -1,7 +1,7 @@
 ﻿using System;
 using TicTacToe.Foundation.Interfaces;
 
-namespace TicTacToe.Foundation.Cell
+namespace TicTacToe.Foundation.Cells
 {
     public class Cell : ICellInternal
     {

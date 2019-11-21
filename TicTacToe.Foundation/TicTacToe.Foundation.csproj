@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell\Cell.cs" />
+    <Compile Include="Cells\Cell.cs" />
     <Compile Include="Interfaces\ICell.cs" />
     <Compile Include="Interfaces\ICellInternal.cs" />
     <Compile Include="Figures\Circle.cs" />
