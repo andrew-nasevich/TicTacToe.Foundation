@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TicTacToe.Foundation.Interfaces;
 using TicTacToe.Foundation.Cells;
 
@@ -28,6 +29,7 @@ namespace TicTacToe.Foundation.Boards
             }
         }
 
+
         public Board(int boardSize)
         {
             BoardSize = boardSize;
@@ -41,13 +43,6 @@ namespace TicTacToe.Foundation.Boards
                     Cells.Add(cellFactory.CreateCell(i, j));
                 }
             }
-        }
-
-
-        private bool GetCell(int row, int column, out ICellInternal cell)
-        {
-            cell = null;
-            return false;
         }
 
         PlaceFigureResult IBoardInternal.PlaceFigure(int row, int column, IFigure figure)
@@ -68,15 +63,20 @@ namespace TicTacToe.Foundation.Boards
             cell.SetFigure(figure);
 
             return PlaceFigureResult.Success;
-
         }
 
 
         public IEnumerator GetEnumerator()
         {
-            throw new NotImplementedException();
+            return Cells.GetEnumerator();
         }
 
-        private IEnumerator Enumerate() { return null; }
+
+        private bool GetCell(int row, int column, out ICellInternal cell)
+        {
+            cell = Cells.FirstOrDefault(_cell => _cell.Row == row && _cell.Column == column);
+            
+            return null != cell;
+        }        
     }
 }
