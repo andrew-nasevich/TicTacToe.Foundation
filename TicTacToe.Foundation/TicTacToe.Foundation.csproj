@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boards\PlaceFigureResult.cs" />
+    <Compile Include="Figures\FigureFactory.cs" />
     <Compile Include="Interfaces\IBoardInternal.cs" />
     <Compile Include="Interfaces\IBoard.cs" />
     <Compile Include="Boards\Board.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Figures\Cross.cs" />
     <Compile Include="Figures\FigureType.cs" />
     <Compile Include="Interfaces\IFigure.cs" />
+    <Compile Include="Interfaces\IFigureFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,7 +3,6 @@
     public enum PlaceFigureResult 
     {
         Success,
-        InvalidCellPosition,
-        CellIsAlreadyFilled
+        InvalidCellPosition
     }
 }

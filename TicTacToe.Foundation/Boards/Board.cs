@@ -3,13 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Foundation.Interfaces;
+using TicTacToe.Foundation.Figures;
 using TicTacToe.Foundation.Cells;
 
 namespace TicTacToe.Foundation.Boards
 {
-    public class Board : IBoardInternal, IEnumerable
+    public class Board : IBoardInternal
     {
-        private readonly List<ICellInternal> Cells;
+        private readonly IReadOnlyCollection<ICellInternal> _cells;
+        private readonly IFigureFactory _figureFactory;
 
 
         public int BoardSize { get; }
@@ -18,65 +20,64 @@ namespace TicTacToe.Foundation.Boards
         {
             get
             {
-                if (row <= 0 || row > BoardSize || column <= 0 || column > BoardSize)
+                ICellInternal cell;
+                if (TryGetCell(row, column, out cell))
+                {
+                    return cell;
+                }
+                else
                 {
                     throw new ArgumentException("Invalid cell position");
                 }
-                ICellInternal cell;
-                GetCell(row, column, out cell);
-
-                return cell;
             }
         }
 
 
-        public Board(int boardSize)
+        public Board(int boardSize, ICellFactory cellFactory, IFigureFactory figureFactory)
         {
             BoardSize = boardSize;
+            _figureFactory = figureFactory;
 
-            Cells = new List<ICellInternal>();
-            ICellFactory cellFactory = new CellFactory();
-            for(var i = 1; i <= boardSize; i++)
-            {
-                for(var j = 0; j <= boardSize; j++)
-                {
-                    Cells.Add((ICellInternal)cellFactory.CreateCell(i, j));
-                }
-            }
+            _cells = new List<ICellInternal>();
+            Enumerable.Range(1, boardSize).Select(i => Enumerable.Range(1, boardSize).
+            Select(j => cellFactory.CreateCell(i, j)));
         }
 
-        PlaceFigureResult IBoardInternal.PlaceFigure(int row, int column, IFigure figure)
+
+        PlaceFigureResult IBoardInternal.PlaceFigure(int row, int column, FigureType figureType)
         {
-            if (row <= 0 || row > BoardSize || column <= 0 || column > BoardSize)
+            if (TryGetCell(row, column, out ICellInternal cell))
+            {
+                cell.SetFigure(_figureFactory.CreateFigure(figureType));
+
+                return PlaceFigureResult.Success;
+            }
+            else
             {
                 return PlaceFigureResult.InvalidCellPosition;
             }
+        }
 
-            ICellInternal cell;
-            GetCell(row, column, out cell);
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
-            if (!cell.IsEmpty)
+
+        public IEnumerator<ICell> GetEnumerator()
+        {
+            foreach (Cell cell in _cells)
             {
-                return PlaceFigureResult.CellIsAlreadyFilled;
+                yield return cell;
             }
-
-            cell.SetFigure(figure);
-
-            return PlaceFigureResult.Success;
         }
 
 
-        public IEnumerator GetEnumerator()
+        private bool TryGetCell(int row, int column, out ICellInternal cell)
         {
-            return Cells.GetEnumerator();
-        }
-
-
-        private bool GetCell(int row, int column, out ICellInternal cell)
-        {
-            cell = Cells.FirstOrDefault(_cell => _cell.Row == row && _cell.Column == column);
+            cell = _cells.SingleOrDefault(c => c.Row == row && c.Column == column);
             
             return null != cell;
-        }        
+        }
     }
 }

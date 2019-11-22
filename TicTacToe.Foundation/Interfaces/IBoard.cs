@@ -1,6 +1,8 @@
-﻿namespace TicTacToe.Foundation.Interfaces
+﻿using System.Collections.Generic;
+
+namespace TicTacToe.Foundation.Interfaces
 {
-    public interface IBoard
+    public interface IBoard : IEnumerable<ICell>
     {
         int BoardSize { get; }
 
