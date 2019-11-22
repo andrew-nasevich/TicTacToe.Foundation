@@ -40,7 +40,7 @@ namespace TicTacToe.Foundation.Boards
             {
                 for(var j = 0; j <= boardSize; j++)
                 {
-                    Cells.Add(cellFactory.CreateCell(i, j));
+                    Cells.Add((ICellInternal)cellFactory.CreateCell(i, j));
                 }
             }
         }
