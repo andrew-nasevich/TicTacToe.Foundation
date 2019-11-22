@@ -2,8 +2,8 @@
 
 namespace TicTacToe.Foundation.Interfaces
 {
-    internal interface ICellFactory
+    public interface ICellFactory
     {
-        ICellInternal CreateCell(int row, int column);
+        ICell CreateCell(int row, int column);
     }
 }

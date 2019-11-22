@@ -2,9 +2,9 @@
 
 namespace TicTacToe.Foundation.Cells
 {
-    internal class CellFactory : ICellFactory
+    public class CellFactory : ICellFactory
     {
-        public ICellInternal CreateCell(int row, int column)
+        public ICell CreateCell(int row, int column)
         {
             return new Cell(row, column);
         }
