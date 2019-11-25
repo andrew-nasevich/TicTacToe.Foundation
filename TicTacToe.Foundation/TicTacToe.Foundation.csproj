@@ -46,10 +46,16 @@
     <Compile Include="Interfaces\ICell.cs" />
     <Compile Include="Interfaces\ICellFactory.cs" />
     <Compile Include="Interfaces\ICellInternal.cs" />
+    <Compile Include="Boards\PlaceFigureResult.cs" />
+    <Compile Include="Figures\FigureFactory.cs" />
+    <Compile Include="Interfaces\IBoardInternal.cs" />
+    <Compile Include="Interfaces\IBoard.cs" />
+    <Compile Include="Boards\Board.cs" />
     <Compile Include="Figures\Circle.cs" />
     <Compile Include="Figures\Cross.cs" />
     <Compile Include="Figures\FigureType.cs" />
     <Compile Include="Interfaces\IFigure.cs" />
+    <Compile Include="Interfaces\IFigureFactory.cs" />
     <Compile Include="Interfaces\IWinningState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinngngStates\CheckCollectionResult.cs" />
