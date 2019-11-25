@@ -10,14 +10,12 @@ namespace TicTacToe.Foundation.Figures
             switch (figureType)
             {
                 case FigureType.Circle:
-
                     return new Circle();
                 case FigureType.Cross:
-
                     return new Cross();
+                default:
+                    throw new ArgumentException("Invalid figureType");
             }
-
-            throw new ArgumentException("Invalid figureType");
         }
     }
 }
