@@ -4,6 +4,6 @@ namespace TicTacToe.Foundation.Interfaces
 {
     public interface IWinningState
     {
-        CheckCollectionResult CheckCollention();
+        CheckCollectionResult Check();
     }
 }

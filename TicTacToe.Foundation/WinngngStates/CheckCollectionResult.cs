@@ -2,9 +2,7 @@
 {
     public enum CheckCollectionResult
     {
-        FiguresAreTheSame,
-        FiguresAreNotTheSame,
-        ALLCellsAreNotFilled,
-        CollectionIsNull
+        CellsHaveTheSameFigure,
+        CellsHaveNoTheSameFigure
     }
 }
