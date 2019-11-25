@@ -4,43 +4,32 @@ using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Foundation.Interfaces;
 using TicTacToe.Foundation.Figures;
-using TicTacToe.Foundation.Cells;
 
 namespace TicTacToe.Foundation.Boards
 {
     public class Board : IBoardInternal
     {
-        private readonly IReadOnlyCollection<ICellInternal> _cells;
         private readonly IFigureFactory _figureFactory;
 
+        private readonly IReadOnlyCollection<ICellInternal> _cells;
+       
 
         public int BoardSize { get; }
 
-        public ICell this[int row, int column]
-        {
-            get
-            {
-                ICellInternal cell;
-                if (TryGetCell(row, column, out cell))
-                {
-                    return cell;
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid cell position");
-                }
-            }
-        }
+        public ICell this[int row, int column] => 
+               TryGetCell(row, column, out ICellInternal cell) ?
+               cell :
+               throw new InvalidOperationException("There is no cell at position row(int) and column(int)");
 
 
-        public Board(int boardSize, ICellFactory cellFactory, IFigureFactory figureFactory)
+        public Board(ICellFactory cellFactory, IFigureFactory figureFactory, int boardSize)
         {
-            BoardSize = boardSize;
             _figureFactory = figureFactory;
+            BoardSize = boardSize;
 
-            _cells = new List<ICellInternal>();
-            Enumerable.Range(1, boardSize).Select(i => Enumerable.Range(1, boardSize).
-            Select(j => cellFactory.CreateCell(i, j)));
+            _cells = Enumerable.Range(0, 5).Select(i => Enumerable.Range(0, 5).
+            Select(j => cellFactory.CreateCell(i, j))).
+            Cast<ICellInternal>().ToList();
         }
 
 
@@ -48,9 +37,17 @@ namespace TicTacToe.Foundation.Boards
         {
             if (TryGetCell(row, column, out ICellInternal cell))
             {
-                cell.SetFigure(_figureFactory.CreateFigure(figureType));
+                if (cell.IsEmpty)
+                {
+                    cell.SetFigure(_figureFactory.CreateFigure(figureType));
 
-                return PlaceFigureResult.Success;
+                    return PlaceFigureResult.Success;
+                }
+                else
+                {
+                    return PlaceFigureResult.CellIsAlreadyFilled;
+                }
+                
             }
             else
             {
@@ -66,10 +63,7 @@ namespace TicTacToe.Foundation.Boards
 
         public IEnumerator<ICell> GetEnumerator()
         {
-            foreach (Cell cell in _cells)
-            {
-                yield return cell;
-            }
+            return _cells.GetEnumerator();
         }
 
 
@@ -77,7 +71,7 @@ namespace TicTacToe.Foundation.Boards
         {
             cell = _cells.SingleOrDefault(c => c.Row == row && c.Column == column);
             
-            return null != cell;
+            return cell != null;
         }
     }
 }
