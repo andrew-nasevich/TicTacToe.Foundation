@@ -17,9 +17,9 @@ namespace TicTacToe.Foundation.Boards
         public int BoardSize { get; }
 
         public ICell this[int row, int column] => 
-               TryGetCell(row, column, out ICellInternal cell) ?
-               cell :
-               throw new InvalidOperationException("There is no cell at position row(int) and column(int)");
+            TryGetCell(row, column, out var cell) 
+            ? cell 
+            : throw new InvalidOperationException("There is no cell at position row(" + row + ") and column(" + column + ")");
 
 
         public Board(ICellFactory cellFactory, IFigureFactory figureFactory, int boardSize)
@@ -27,32 +27,29 @@ namespace TicTacToe.Foundation.Boards
             _figureFactory = figureFactory;
             BoardSize = boardSize;
 
-            _cells = Enumerable.Range(0, boardSize).Select(i => Enumerable.Range(0, boardSize).
-            Select(j => cellFactory.CreateCell(i, j))).
-            Cast<ICellInternal>().ToList();
+            _cells = Enumerable.Range(0, boardSize)
+                .SelectMany(i => Enumerable.Range(0, boardSize)
+                .Select(j => cellFactory.CreateCell(i, j)))
+                .Cast<ICellInternal>()
+                .ToList();
         }
 
 
         PlaceFigureResult IBoardInternal.PlaceFigure(int row, int column, FigureType figureType)
         {
-            if (TryGetCell(row, column, out ICellInternal cell))
-            {
-                if (cell.IsEmpty)
-                {
-                    cell.SetFigure(_figureFactory.CreateFigure(figureType));
-
-                    return PlaceFigureResult.Success;
-                }
-                else
-                {
-                    return PlaceFigureResult.CellIsAlreadyFilled;
-                }
-                
-            }
-            else
+            if (!TryGetCell(row, column, out var cell))
             {
                 return PlaceFigureResult.InvalidCellPosition;
             }
+
+            if (cell.IsEmpty)
+            {
+                cell.SetFigure(_figureFactory.CreateFigure(figureType));
+
+                return PlaceFigureResult.Success;
+            }
+
+            return PlaceFigureResult.CellIsAlreadyFilled;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
