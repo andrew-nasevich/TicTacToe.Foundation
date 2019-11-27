@@ -19,7 +19,7 @@ namespace TicTacToe.Foundation.Boards
         public ICell this[int row, int column] => 
             TryGetCell(row, column, out var cell) 
             ? cell 
-            : throw new InvalidOperationException("There is no cell at position row(" + row + ") and column(" + column + ")");
+            : throw new InvalidOperationException($"There is no cell at position row = {row} and column = {column}");
 
 
         public Board(ICellFactory cellFactory, IFigureFactory figureFactory, int boardSize)
@@ -41,15 +41,13 @@ namespace TicTacToe.Foundation.Boards
             {
                 return PlaceFigureResult.InvalidCellPosition;
             }
-
-            if (cell.IsEmpty)
+            if (!cell.IsEmpty)
             {
-                cell.SetFigure(_figureFactory.CreateFigure(figureType));
-
-                return PlaceFigureResult.Success;
+                return PlaceFigureResult.CellIsAlreadyFilled;
             }
+            cell.SetFigure(_figureFactory.CreateFigure(figureType));
 
-            return PlaceFigureResult.CellIsAlreadyFilled;
+            return PlaceFigureResult.Success;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

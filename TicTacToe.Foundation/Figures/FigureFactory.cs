@@ -14,7 +14,7 @@ namespace TicTacToe.Foundation.Figures
                 case FigureType.Cross:
                     return new Cross();
                 default:
-                    throw new ArgumentOutOfRangeException("Invalid figureFigure(FigureType) value");
+                    throw new ArgumentOutOfRangeException(nameof(figureType),$"Invalid value: {figureType}");
             }
         }
     }
