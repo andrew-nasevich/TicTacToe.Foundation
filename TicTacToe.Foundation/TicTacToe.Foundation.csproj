@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Cells\Cell.cs" />
     <Compile Include="Cells\CellFactory.cs" />
+    <Compile Include="GameConfigurations\GameConfiguration.cs" />
     <Compile Include="Interfaces\ICell.cs" />
     <Compile Include="Interfaces\ICellFactory.cs" />
     <Compile Include="Interfaces\ICellInternal.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Figures\Cross.cs" />
     <Compile Include="Figures\FigureType.cs" />
     <Compile Include="Interfaces\IFigure.cs" />
+    <Compile Include="Interfaces\IGameConfiguration.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
