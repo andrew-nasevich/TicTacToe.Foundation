@@ -2,6 +2,6 @@
 {
     public interface IWinningState
     {
-        bool IsWinningState { get; }
+        bool IsWinning { get; }
     }
 }

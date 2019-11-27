@@ -1,18 +1,13 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using TicTacToe.Foundation.Interfaces;
+﻿using TicTacToe.Foundation.Interfaces;
 
 namespace TicTacToe.Foundation.WinningStates
 {
     public class WinningStateRow : WinningState
     {
-        public WinningStateRow(IBoard board, int rowToCheck)
+        public WinningStateRow(IBoard board, int rowToCheck) 
+            : base(board, cell => cell.Row == rowToCheck)
         {
-            _cells = (IReadOnlyCollection<ICell>)Enumerable.Range(0, board.BoardSize)
-                .SelectMany(row => Enumerable
-                    .Range(0, board.BoardSize)
-                    .Select(column => board[row, column]))
-                .Where(cell => cell.Row == rowToCheck);
+
         }
     }
 }
