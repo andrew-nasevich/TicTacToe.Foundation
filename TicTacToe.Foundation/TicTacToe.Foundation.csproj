@@ -58,11 +58,11 @@
     <Compile Include="Interfaces\IFigureFactory.cs" />
     <Compile Include="Interfaces\IWinningState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WinngngStates\CheckCollectionResult.cs" />
-    <Compile Include="WinngngStates\WinningStateColumn.cs" />
-    <Compile Include="WinngngStates\WinningStateMainDiagonal.cs" />
-    <Compile Include="WinngngStates\WinningStateRow.cs" />
-    <Compile Include="WinngngStates\WinningStateSecondaryDiagonal.cs" />
+    <Compile Include="WinningStates\WinningState.cs" />
+    <Compile Include="WinningStates\WinningStateColumn.cs" />
+    <Compile Include="WinningStates\WinningStateMainDiagonal.cs" />
+    <Compile Include="WinningStates\WinningStateRow.cs" />
+    <Compile Include="WinningStates\WinningStateSecondaryDiagonal.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

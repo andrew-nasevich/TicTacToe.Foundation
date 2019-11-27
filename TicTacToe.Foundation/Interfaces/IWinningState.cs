@@ -1,9 +1,7 @@
-﻿using TicTacToe.Foundation.WinngngStates;
-
-namespace TicTacToe.Foundation.Interfaces
+﻿namespace TicTacToe.Foundation.Interfaces
 {
     public interface IWinningState
     {
-        CheckCollectionResult Check();
+        bool IsWinningState { get; }
     }
 }
