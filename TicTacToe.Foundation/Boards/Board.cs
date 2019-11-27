@@ -28,8 +28,9 @@ namespace TicTacToe.Foundation.Boards
             BoardSize = boardSize;
 
             _cells = Enumerable.Range(0, boardSize)
-                .SelectMany(i => Enumerable.Range(0, boardSize)
-                .Select(j => cellFactory.CreateCell(i, j)))
+                .SelectMany(i => Enumerable
+                    .Range(0, boardSize)
+                    .Select(j => cellFactory.CreateCell(i, j)))
                 .Cast<ICellInternal>()
                 .ToList();
         }
