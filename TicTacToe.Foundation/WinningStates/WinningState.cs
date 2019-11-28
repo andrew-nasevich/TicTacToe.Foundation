@@ -9,34 +9,19 @@ namespace TicTacToe.Foundation.WinningStates
     {
         private readonly IReadOnlyCollection<ICell> _cells;
 
-        private bool? _winning;
+        private bool? _isWinning;
 
 
-        public bool IsWinning
-        {
-            get
-            {
-                if (_winning != null)
-                {
-                    return _winning == true;
-                }
-                if (_cells.Any(cell => cell.IsEmpty))
-                {
-                    return false;
-                }
-
-                _winning = _cells.Select(cell => cell.Figure.Type)
-                                       .Distinct()
-                                       .Count() == 1;
-
-                return _winning == true;
-            }
-        }
+        public bool IsWinning => _isWinning ?? 
+                                 _cells.Any(cell => cell.IsEmpty) 
+                                 && (_isWinning = _cells.Select(cell => cell.Figure.Type)
+                                         .Distinct()
+                                         .Count() == 1).Value;
 
 
         protected WinningState(IBoard board, Func<ICell, bool> predicate)
         {
-            _cells = (IReadOnlyCollection<ICell>) board.Where(predicate);
+            _cells = board.Where(predicate).ToList();
         }
     }
 }
