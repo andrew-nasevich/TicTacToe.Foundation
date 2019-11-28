@@ -1,21 +1,19 @@
 ﻿using TicTacToe.Foundation.Interfaces;
+using TicTacToe.Foundation.Figures;
 
 namespace TicTacToe.Foundation.Players
 {
     public class Player : IPlayer
     {
-        public IFigure Figure { get; }
-
         public string Name { get; }
 
-        public int Id { get; }
+        public FigureType FigureType { get; }
 
 
-        public Player(IFigure figure, string name, int id)
+        public Player(string name, FigureType figureType)
         {
-            Figure = figure;
+            FigureType = figureType;
             Name = name;
-            Id = id;
         }
     }
 }
