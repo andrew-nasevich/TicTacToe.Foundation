@@ -4,10 +4,10 @@ namespace TicTacToe.Foundation.Interfaces
 {
     public interface IGameConfiguration
     {
-        IReadOnlyCollection<IPlayer> Players { get; }
+        int BoardSize { get; }
 
         IPlayer FirstStepPlayer { get; }
 
-        int BoardSize { get; }
+        IReadOnlyCollection<IPlayer> Players { get; }
     }
 }

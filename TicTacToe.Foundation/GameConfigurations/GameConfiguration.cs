@@ -5,18 +5,18 @@ namespace TicTacToe.Foundation.GameConfigurations
 {
     public class GameConfiguration : IGameConfiguration
     {
-        public IReadOnlyCollection<IPlayer> Players { get; }
+        public int BoardSize { get; }
 
         public IPlayer FirstStepPlayer { get; }
 
-        public int BoardSize { get; }
+        public IReadOnlyCollection<IPlayer> Players { get; }
 
 
-        public GameConfiguration(IReadOnlyCollection<IPlayer> players, IPlayer firstStepPlayer, int boardSize)
+        public GameConfiguration(int boardSize, IPlayer firstStepPlayer, IReadOnlyCollection<IPlayer> players)
         {
-            Players = players;
-            FirstStepPlayer = firstStepPlayer;
             BoardSize = boardSize;
+            FirstStepPlayer = firstStepPlayer;
+            Players = players;
         }
     }
 }
