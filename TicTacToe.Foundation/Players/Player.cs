@@ -12,8 +12,8 @@ namespace TicTacToe.Foundation.Players
 
         public Player(string name, FigureType figureType)
         {
-            FigureType = figureType;
             Name = name;
+            FigureType = figureType;
         }
     }
 }
