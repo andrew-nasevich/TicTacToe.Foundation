@@ -12,11 +12,14 @@ namespace TicTacToe.Foundation.WinningStates
         private bool? _isWinning;
 
 
+        private bool IsOneType => _cells.Select(cell => cell.Figure.Type)
+                                      .Distinct()
+                                      .Count() == 1;
+
+
         public bool IsWinning => _isWinning ?? 
-                                 _cells.Any(cell => cell.IsEmpty) 
-                                 && (_isWinning = _cells.Select(cell => cell.Figure.Type)
-                                         .Distinct()
-                                         .Count() == 1).Value;
+                                 !_cells.Any(cell => cell.IsEmpty) 
+                                 && (_isWinning = IsOneType).Value;
 
 
         protected WinningState(IBoard board, Func<ICell, bool> predicate)
