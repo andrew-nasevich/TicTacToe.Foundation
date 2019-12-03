@@ -1,6 +1,6 @@
-﻿namespace TicTacToe.Foundation.Games
+﻿namespace TicTacToe.Foundation.Games.StepResults
 {
-    public enum GameStepResult
+    public enum StepResultType
     {
         Success,
         InvalidCellPosition,

@@ -1,15 +1,16 @@
 ﻿using System;
-using TicTacToe.Foundation.Games;
+using TicTacToe.Foundation.Games.StepResults;
+using TicTacToe.Foundation.Games.GameResults;
 
 namespace TicTacToe.Foundation.Interfaces
 {
     public interface IGame
     {
-        event EventHandler<GameStepEventArgs> GameStep;
+        event EventHandler<StepResult> GameStepCompleted;
 
-        event EventHandler<GameIsFinishedEventArgs> GameIsFinished;
+        event EventHandler<GameResult> GameFinished;
 
 
-        void Run();
+        GameResult Run();
     }
 }

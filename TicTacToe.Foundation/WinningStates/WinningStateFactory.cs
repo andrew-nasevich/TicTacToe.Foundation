@@ -1,27 +1,24 @@
-﻿using TicTacToe.Foundation.Interfaces;
+﻿using System.Linq;
+using System.Collections.Generic;
+using TicTacToe.Foundation.Interfaces;
 
 namespace TicTacToe.Foundation.WinningStates
 {
     public class WinningStateFactory : IWinningStateFactory
     {
-        public IWinningState CreateWinningStateColumn(IBoard board, int columnToCheck)
+        public IReadOnlyCollection<IWinningState> CreateWinningStateCollection(IBoard board)
         {
-            return new WinningStateColumn(board, columnToCheck);
-        }
+            var winningStates = new List<IWinningState>
+            {
+                new WinningStateMainDiagonal(board),
+                new WinningStateSecondaryDiagonal(board)
+            };
+            winningStates.AddRange(Enumerable.Range(0, board.BoardSize)
+                .Select(column => new WinningStateColumn(board, column)));
+            winningStates.AddRange(Enumerable.Range(0, board.BoardSize)
+                .Select(row => new WinningStateRow(board, row)));
 
-        public IWinningState CreateWinningStateMainDiagonal(IBoard board)
-        {
-            return new WinningStateMainDiagonal(board);
-        }
-
-        public IWinningState CreateWinningStateRow(IBoard board, int rowToCheck)
-        {
-            return new WinningStateRow(board, rowToCheck);
-        }
-
-        public IWinningState CreateWinningStateSecondaryDiagonal(IBoard board)
-        {
-            return new WinningStateSecondaryDiagonal(board);
+            return winningStates;
         }
     }
 }

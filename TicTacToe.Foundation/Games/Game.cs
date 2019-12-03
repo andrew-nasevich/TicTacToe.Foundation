@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TicTacToe.Foundation.Boards;
 using TicTacToe.Foundation.Interfaces;
+using TicTacToe.Foundation.Games.StepResults;
+using TicTacToe.Foundation.Games.GameResults;
 
 namespace TicTacToe.Foundation.Games
 {
@@ -12,67 +14,58 @@ namespace TicTacToe.Foundation.Games
         private readonly IBoardInternal _board;
         private readonly IReadOnlyCollection<IWinningState> _winningStates;
 
-        private bool _isFinished;
-        private int _boardSize;
-        private IPlayer _currentPlayer;
+        private int _currentPlayerIndex;
         
 
-        public event EventHandler<GameStepEventArgs> GameStep;
+        public event EventHandler<StepResult> GameStepCompleted;
 
-        public event EventHandler<GameIsFinishedEventArgs> GameIsFinished;
+        public event EventHandler<GameResult> GameFinished;
 
 
         public Game(
             IGameConfiguration gameConfiguration,
             IBoardFactory boardFactory,
-            ICellFactory cellFactory,
-            IFigureFactory figureFactory,
             IWinningStateFactory winningStateFactory)
         {
-            _boardSize = gameConfiguration.BoardSize;
-            _currentPlayer = gameConfiguration.FirstStepPlayer;
+            _currentPlayerIndex = _players.ToList().IndexOf(gameConfiguration.FirstStepPlayer);
             _players = gameConfiguration.Players;
-            IList<IPlayer> players = gameConfiguration.Players.ToList();
+            _players = gameConfiguration.Players;
 
-            _board = new Board(cellFactory, figureFactory, gameConfiguration.BoardSize);
+            _board = (IBoardInternal)boardFactory.CreateBoard(gameConfiguration.BoardSize);
 
-            var winningStates = new List<IWinningState>
-            {
-                winningStateFactory.CreateWinningStateMainDiagonal(_board),
-                winningStateFactory.CreateWinningStateSecondaryDiagonal(_board)
-            };
-            winningStates.AddRange(Enumerable.Range(0, _boardSize)
-                .Select(column => winningStateFactory.CreateWinningStateColumn(_board, column)));
-            winningStates.AddRange(Enumerable.Range(0, _boardSize)
-                .Select(row => winningStateFactory.CreateWinningStateRow(_board, row)));
-
-            _winningStates = winningStates;
+            _winningStates = winningStateFactory.CreateWinningStateCollection(_board);
         }
 
 
-        public void Run()
+        public GameResult Run()
         {
-            while (!_isFinished)
+            GameResult gameResult;
+            do
             {
                 MakeStep();
 
-                _isFinished = _winningStates.Any(el => el.IsWinning);
-                if (_isFinished)
+                if (_winningStates.Any(el => el.IsWinning))
                 {
-                    var gameIsFinishedEventArgs = new GameIsFinishedEventArgs(_currentPlayer);
-                    GameIsFinished.Invoke(this, gameIsFinishedEventArgs);
+                    gameResult = new GameResult(GameResultType.Win);
+                    GameFinished.Invoke(this, gameResult);
 
-                    return;
+                    return gameResult;
                 }
 
                 MoveToNextPlayer();
-            }
+
+            } while (_board.All(cell => !cell.IsEmpty));
+
+            gameResult = new GameResult(GameResultType.Win);
+            GameFinished.Invoke(this, gameResult);
+
+            return gameResult;
         }
 
 
         private void MoveToNextPlayer()
         {
-            _currentPlayer = _players.ElementAt(_players.ToList().IndexOf(_currentPlayer) + 1 % _players.Count);
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
         }
 
         private void MakeStep()
@@ -85,25 +78,25 @@ namespace TicTacToe.Foundation.Games
             {
                 //TODO getting step coordinates
 
-                placeFigureResult = _board.PlaceFigure(row, column, _currentPlayer.FigureType);
+                placeFigureResult = _board.PlaceFigure(row, column, _players.ElementAt(_currentPlayerIndex).FigureType);
 
-                GameStepEventArgs gameStepEventArgs;
+                StepResult gameStepEventArgs;
                 switch (placeFigureResult)
                 { 
                     case PlaceFigureResult.Success:
-                        gameStepEventArgs = new GameStepEventArgs(GameStepResult.Success, _board);
-                        GameStep.Invoke(this, gameStepEventArgs);
+                        gameStepEventArgs = new StepResult(StepResultType.Success);
+                        GameStepCompleted.Invoke(this, gameStepEventArgs);
                         break;
                     case PlaceFigureResult.CellIsAlreadyFilled:
-                        gameStepEventArgs = new GameStepEventArgs(GameStepResult.CellIsAlreadyFilled, _board);
-                        GameStep.Invoke(this, gameStepEventArgs);
+                        gameStepEventArgs = new StepResult(StepResultType.CellIsAlreadyFilled);
+                        GameStepCompleted.Invoke(this, gameStepEventArgs);
                         break;
                     case PlaceFigureResult.InvalidCellPosition:
-                        gameStepEventArgs = new GameStepEventArgs(GameStepResult.InvalidCellPosition, _board);
-                        GameStep.Invoke(this, gameStepEventArgs);
+                        gameStepEventArgs = new StepResult(StepResultType.InvalidCellPosition);
+                        GameStepCompleted.Invoke(this, gameStepEventArgs);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(placeFigureResult), $"There is no result of placing figure with this placeFigureResult: {placeFigureResult}");
+                        throw new ArgumentOutOfRangeException(nameof(placeFigureResult), $"There is no result of placing figure with this placeFigureCompletedResult: {placeFigureResult}");
                 }
                 
             } while (placeFigureResult == PlaceFigureResult.Success);
