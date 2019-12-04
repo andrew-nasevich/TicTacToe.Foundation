@@ -6,6 +6,7 @@ namespace TicTacToe.Foundation.Games.GameResults
     {
         public IPlayer WonPlayer { get; }
 
+
         public WinGameResult(IPlayer wonPlayer) 
             : base(GameResultType.Win)
         {

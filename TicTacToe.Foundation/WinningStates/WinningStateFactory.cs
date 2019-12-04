@@ -8,17 +8,14 @@ namespace TicTacToe.Foundation.WinningStates
     {
         public IReadOnlyCollection<IWinningState> CreateWinningStatesCollection(IBoard board)
         {
-            var winningStates = new List<IWinningState>
-            {
-                new WinningStateMainDiagonal(board),
-                new WinningStateSecondaryDiagonal(board)
-            };
-            winningStates.AddRange(Enumerable.Range(0, board.BoardSize)
-                .Select(column => new WinningStateColumn(board, column)));
-            winningStates.AddRange(Enumerable.Range(0, board.BoardSize)
-                .Select(row => new WinningStateRow(board, row)));
-
-            return winningStates;
+            return Enumerable.Range(0, board.BoardSize)
+                .Select(column => (IWinningState) new WinningStateColumn(board, column))
+                .Concat(Enumerable
+                    .Range(0, board.BoardSize)
+                    .Select(row => (IWinningState) new WinningStateRow(board, row)))
+                .Append(new WinningStateMainDiagonal(board))
+                .Append(new WinningStateSecondaryDiagonal(board))
+                .ToList();
         }
     }
 }

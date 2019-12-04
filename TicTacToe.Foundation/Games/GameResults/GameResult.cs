@@ -1,11 +1,11 @@
 ﻿namespace TicTacToe.Foundation.Games.GameResults
 {
-    public class GameResult
+    public abstract class GameResult
     {
         public GameResultType GameResultType { get; }
 
 
-        public GameResult(GameResultType gameResult)
+        protected GameResult(GameResultType gameResult)
         {
             GameResultType = gameResult;
         }

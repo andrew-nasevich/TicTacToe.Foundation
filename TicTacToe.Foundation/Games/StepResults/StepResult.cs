@@ -1,13 +1,13 @@
 ﻿namespace TicTacToe.Foundation.Games.StepResults
 {
-    public class StepResult
+    public abstract class StepResult
     {
-        public StepResultType CompletedResult{ get; }
+        public StepResultType StepResultType { get; }
 
 
-        public StepResult(StepResultType stepResultType)
+        protected StepResult(StepResultType stepResultType)
         {
-            CompletedResult = stepResultType;
+            StepResultType = stepResultType;
         }
     }
 }

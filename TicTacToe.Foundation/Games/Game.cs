@@ -10,13 +10,12 @@ namespace TicTacToe.Foundation.Games
 {
     public class Game : IGame
     {
-        private readonly IIoProvider _ioProvider;
+        private readonly IGameInputProvider _gameInputProvider;
         private readonly IReadOnlyCollection<IPlayer> _players;
         private readonly IBoardInternal _board;
         private readonly IReadOnlyCollection<IWinningState> _winningStates;
 
         private int _currentPlayerIndex;
-        private IPlayer _currentPlayer;
 
 
         public event EventHandler<GameStepCompletedEventArgs> GameStepCompleted;
@@ -25,18 +24,17 @@ namespace TicTacToe.Foundation.Games
 
 
         public Game(
-            IIoProvider ioProvider,
+            IGameInputProvider gameInputProvider,
             IGameConfiguration gameConfiguration,
             IBoardFactory boardFactory,
             IWinningStateFactory winningStateFactory)
         {
-            _ioProvider = ioProvider;
+            _gameInputProvider = gameInputProvider;
             _players = gameConfiguration.Players;
             _board = (IBoardInternal)boardFactory.CreateBoard(gameConfiguration.BoardSize);
             _winningStates = winningStateFactory.CreateWinningStatesCollection(_board);
 
             _currentPlayerIndex = _players.ToList().IndexOf(gameConfiguration.FirstStepPlayer);
-            _currentPlayer = gameConfiguration.FirstStepPlayer;
         }
 
 
@@ -57,9 +55,9 @@ namespace TicTacToe.Foundation.Games
             PlaceFigureResult placeFigureResult;
             do
             {
-                _ioProvider.GetStepCoordinates(out var row, out var column, _currentPlayer);
+                _gameInputProvider.GetStepCoordinates(out var row, out var column, _players.ElementAt(_currentPlayerIndex));
 
-                placeFigureResult = _board.PlaceFigure(row, column, _currentPlayer.FigureType);
+                placeFigureResult = _board.PlaceFigure(row, column, _players.ElementAt(_currentPlayerIndex).FigureType);
 
                 StepResult stepResult;
                 switch (placeFigureResult)
@@ -86,7 +84,6 @@ namespace TicTacToe.Foundation.Games
         private void MoveToNextPlayer()
         {
             _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
-            _currentPlayer = _players.ElementAt(_currentPlayerIndex);
         }
 
         public GameResult Run()
@@ -97,7 +94,7 @@ namespace TicTacToe.Foundation.Games
                 MakeStep();
                 if (_winningStates.Any(el => el.IsWinning))
                 {
-                    gameResult = new WinGameResult(_currentPlayer);
+                    gameResult = new WinGameResult(_players.ElementAt(_currentPlayerIndex));
                     InvokeGameFinished(gameResult);
 
                     return gameResult;

@@ -1,6 +1,8 @@
-﻿namespace TicTacToe.Foundation.Games.StepResults
+﻿using System;
+
+namespace TicTacToe.Foundation.Games.StepResults
 {
-    public class GameStepCompletedEventArgs
+    public class GameStepCompletedEventArgs : EventArgs
     {
         public StepResult StepResult { get; }
 

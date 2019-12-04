@@ -75,7 +75,7 @@
     <Compile Include="Interfaces\IFigureFactory.cs" />
     <Compile Include="Interfaces\IGame.cs" />
     <Compile Include="Interfaces\IGameConfiguration.cs" />
-    <Compile Include="Interfaces\IIoProvider.cs" />
+    <Compile Include="Interfaces\IGameInputProvider.cs" />
     <Compile Include="Interfaces\IWinningState.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Interfaces\IWinningStateFactory.cs" />

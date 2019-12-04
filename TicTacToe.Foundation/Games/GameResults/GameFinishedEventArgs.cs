@@ -1,6 +1,8 @@
-﻿namespace TicTacToe.Foundation.Games.GameResults
+﻿using System;
+
+namespace TicTacToe.Foundation.Games.GameResults
 {
-    public class GameFinishedEventArgs
+    public class GameFinishedEventArgs : EventArgs
     {
         public GameResult GameResult { get; }
 
