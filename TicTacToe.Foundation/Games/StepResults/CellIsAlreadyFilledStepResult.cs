@@ -6,6 +6,7 @@ namespace TicTacToe.Foundation.Games.StepResults
     {
         public ICell Cell { get; }
 
+
         public CellIsAlreadyFilledStepResult(ICell cell) 
             : base(StepResultType.CellIsAlreadyFilled)
         {

@@ -48,11 +48,13 @@
     <Compile Include="Cells\CellFactory.cs" />
     <Compile Include="GameConfigurations\GameConfiguration.cs" />
     <Compile Include="Games\GameResults\DrawGameResult.cs" />
+    <Compile Include="Games\GameResults\GameFinishedEventArgs.cs" />
     <Compile Include="Games\GameResults\GameResult.cs" />
     <Compile Include="Games\Game.cs" />
     <Compile Include="Games\GameResults\GameResultType.cs" />
     <Compile Include="Games\GameResults\WinGameResult.cs" />
     <Compile Include="Games\StepResults\CellIsAlreadyFilledStepResult.cs" />
+    <Compile Include="Games\StepResults\GameStepCompletedEventArgs.cs" />
     <Compile Include="Games\StepResults\InvalidCellPositionStepResult.cs" />
     <Compile Include="Games\StepResults\StepResult.cs" />
     <Compile Include="Games\StepResults\StepResultType.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Interfaces\IFigureFactory.cs" />
     <Compile Include="Interfaces\IGame.cs" />
     <Compile Include="Interfaces\IGameConfiguration.cs" />
+    <Compile Include="Interfaces\IIoProvider.cs" />
     <Compile Include="Interfaces\IWinningState.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Interfaces\IWinningStateFactory.cs" />

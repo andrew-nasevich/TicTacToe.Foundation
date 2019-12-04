@@ -6,7 +6,7 @@ namespace TicTacToe.Foundation.WinningStates
 {
     public class WinningStateFactory : IWinningStateFactory
     {
-        public IReadOnlyCollection<IWinningState> CreateWinningStateCollection(IBoard board)
+        public IReadOnlyCollection<IWinningState> CreateWinningStatesCollection(IBoard board)
         {
             var winningStates = new List<IWinningState>
             {

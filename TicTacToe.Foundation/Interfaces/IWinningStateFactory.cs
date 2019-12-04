@@ -4,6 +4,6 @@ namespace TicTacToe.Foundation.Interfaces
 {
     public interface IWinningStateFactory
     {
-        IReadOnlyCollection<IWinningState> CreateWinningStateCollection(IBoard board);
+        IReadOnlyCollection<IWinningState> CreateWinningStatesCollection(IBoard board);
     }
 }

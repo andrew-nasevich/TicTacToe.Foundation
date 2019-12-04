@@ -5,6 +5,8 @@
         public int SelectedRow { get; }
         
         public int SelectedColumn { get; }
+
+
         public InvalidCellPositionStepResult(int row, int column) 
             : base(StepResultType.InvalidCellPosition)
         {
