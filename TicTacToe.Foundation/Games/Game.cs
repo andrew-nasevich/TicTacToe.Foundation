@@ -5,6 +5,7 @@ using TicTacToe.Foundation.Boards;
 using TicTacToe.Foundation.Interfaces;
 using TicTacToe.Foundation.Games.StepResults;
 using TicTacToe.Foundation.Games.GameResults;
+using TicTacToe.Common.Interfaces;
 
 namespace TicTacToe.Foundation.Games
 {
@@ -14,6 +15,7 @@ namespace TicTacToe.Foundation.Games
         private readonly IReadOnlyCollection<IPlayer> _players;
         private readonly IBoardInternal _board;
         private readonly IReadOnlyCollection<IWinningState> _winningStates;
+        private readonly IEventInvoker _eventInvoker;
 
         private int _currentPlayerIndex;
 
@@ -27,12 +29,14 @@ namespace TicTacToe.Foundation.Games
             IGameInputProvider gameInputProvider,
             IGameConfiguration gameConfiguration,
             IBoardFactory boardFactory,
-            IWinningStateFactory winningStateFactory)
+            IWinningStateFactory winningStateFactory,
+            IEventInvoker eventInvoker)
         {
             _gameInputProvider = gameInputProvider;
             _players = gameConfiguration.Players;
             _board = (IBoardInternal)boardFactory.CreateBoard(gameConfiguration.BoardSize);
             _winningStates = winningStateFactory.CreateWinningStatesCollection(_board);
+            _eventInvoker = eventInvoker;
 
             _currentPlayerIndex = _players.ToList().IndexOf(gameConfiguration.FirstStepPlayer);
         }
@@ -41,13 +45,13 @@ namespace TicTacToe.Foundation.Games
         private void InvokeGameFinished(GameResult gameResult)
         {
             var gameFinishedEventArgs = new GameFinishedEventArgs(gameResult);
-            GameFinished?.Invoke(this, gameFinishedEventArgs);
+            _eventInvoker.Invoke<GameFinishedEventArgs>(GameFinished, this, gameFinishedEventArgs);
         }
 
         private void InvokeGameStepCompleted(StepResult stepResult)
         {
             var gameStepCompletedEventArgs = new GameStepCompletedEventArgs(stepResult);
-            GameStepCompleted?.Invoke(this, gameStepCompletedEventArgs);
+            _eventInvoker.Invoke<GameStepCompletedEventArgs>(GameStepCompleted, this, gameStepCompletedEventArgs);
         }
 
         private void MakeStep()
