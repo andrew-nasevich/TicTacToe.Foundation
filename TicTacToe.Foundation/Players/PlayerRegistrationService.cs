@@ -8,18 +8,18 @@ namespace TicTacToe.Foundation.Players
 {
     public class PlayerRegistrationService : IPlayerRegistrationService
     {
-        private readonly IIoProvider _ioProvider;
+        private readonly IPlayerRegistrationInputProvider _playerRegistrationInputProvider;
         private readonly IPlayerFactory _playerFactory;
 
         public ICollection<FigureType> AvailableFigureTypes { get; }
 
 
         public PlayerRegistrationService(
-            IIoProvider ioProvider, 
+            IPlayerRegistrationInputProvider playerRegistrationInputProvider, 
             IPlayerFactory playerFactory, 
             ICollection<FigureType> availableFigureTypes)
         {
-            _ioProvider = ioProvider;
+            _playerRegistrationInputProvider = playerRegistrationInputProvider;
             _playerFactory = playerFactory;
             AvailableFigureTypes = availableFigureTypes;
         }
@@ -32,8 +32,8 @@ namespace TicTacToe.Foundation.Players
                 throw new InvalidOperationException("There is no more available figure types");
             }
 
-            var name = _ioProvider.GeyPlayerName();
-            var figureType = _ioProvider.GetPlayerFigure(AvailableFigureTypes.ToList());
+            var name = _playerRegistrationInputProvider.GeyPlayerName();
+            var figureType = _playerRegistrationInputProvider.GetPlayerFigure(AvailableFigureTypes.ToList());
 
             AvailableFigureTypes.Remove(figureType);
 

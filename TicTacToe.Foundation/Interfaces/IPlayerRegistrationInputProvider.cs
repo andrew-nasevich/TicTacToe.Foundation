@@ -3,7 +3,7 @@ using TicTacToe.Foundation.Figures;
 
 namespace TicTacToe.Foundation.Interfaces
 {
-    public interface IIoProvider
+    public interface IPlayerRegistrationInputProvider
     {
         string GeyPlayerName();
         FigureType GetPlayerFigure(IReadOnlyCollection<FigureType> availableFigureTypes);
