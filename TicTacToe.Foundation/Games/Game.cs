@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TicTacToe.Common.EventExtensions;
 using TicTacToe.Foundation.Boards;
 using TicTacToe.Foundation.Interfaces;
 using TicTacToe.Foundation.Games.StepResults;
 using TicTacToe.Foundation.Games.GameResults;
-using TicTacToe.Common.Interfaces;
 
 namespace TicTacToe.Foundation.Games
 {
     public class Game : IGame
     {
         private readonly IGameInputProvider _gameInputProvider;
-        private readonly IReadOnlyCollection<IPlayer> _players;
+        private readonly IReadOnlyList<IPlayer> _players;
+
         private readonly IBoardInternal _board;
         private readonly IReadOnlyCollection<IWinningState> _winningStates;
-        private readonly IEventInvoker _eventInvoker;
 
         private int _currentPlayerIndex;
+
+
+        private IPlayer CurrentPlayer => _players[_currentPlayerIndex]; 
 
 
         public event EventHandler<GameStepCompletedEventArgs> GameStepCompleted;
@@ -29,29 +32,51 @@ namespace TicTacToe.Foundation.Games
             IGameInputProvider gameInputProvider,
             IGameConfiguration gameConfiguration,
             IBoardFactory boardFactory,
-            IWinningStateFactory winningStateFactory,
-            IEventInvoker eventInvoker)
+            IWinningStateFactory winningStateFactory)
         {
             _gameInputProvider = gameInputProvider;
-            _players = gameConfiguration.Players;
+            _players = gameConfiguration.Players.ToList();
+
             _board = (IBoardInternal)boardFactory.CreateBoard(gameConfiguration.BoardSize);
             _winningStates = winningStateFactory.CreateWinningStatesCollection(_board);
-            _eventInvoker = eventInvoker;
 
             _currentPlayerIndex = _players.ToList().IndexOf(gameConfiguration.FirstStepPlayer);
+        }
+
+
+        public GameResult Run()
+        {
+            GameResult gameResult;
+            do
+            {
+                MakeStep();
+                if (_winningStates.Any(ws => ws.IsWinning))
+                {
+                    gameResult = new WinGameResult(CurrentPlayer);
+                    InvokeGameFinished(gameResult);
+
+                    return gameResult;
+                }
+                MoveToNextPlayer();
+            } while (_board.All(cell => !cell.IsEmpty));
+
+            gameResult = new DrawGameResult();
+            InvokeGameFinished(gameResult);
+
+            return gameResult;
         }
 
 
         private void InvokeGameFinished(GameResult gameResult)
         {
             var gameFinishedEventArgs = new GameFinishedEventArgs(gameResult);
-            _eventInvoker.Invoke<GameFinishedEventArgs>(GameFinished, this, gameFinishedEventArgs);
+            GameFinished.Raise(this, gameFinishedEventArgs);
         }
 
         private void InvokeGameStepCompleted(StepResult stepResult)
         {
             var gameStepCompletedEventArgs = new GameStepCompletedEventArgs(stepResult);
-            _eventInvoker.Invoke<GameStepCompletedEventArgs>(GameStepCompleted, this, gameStepCompletedEventArgs);
+            GameStepCompleted.Raise(this, gameStepCompletedEventArgs);
         }
 
         private void MakeStep()
@@ -59,9 +84,9 @@ namespace TicTacToe.Foundation.Games
             PlaceFigureResult placeFigureResult;
             do
             {
-                _gameInputProvider.GetStepCoordinates(out var row, out var column, _players.ElementAt(_currentPlayerIndex));
+                _gameInputProvider.GetNextCellPosition(out var row, out var column, CurrentPlayer);
 
-                placeFigureResult = _board.PlaceFigure(row, column, _players.ElementAt(_currentPlayerIndex).FigureType);
+                placeFigureResult = _board.PlaceFigure(row, column, CurrentPlayer.FigureType);
 
                 StepResult stepResult;
                 switch (placeFigureResult)
@@ -79,7 +104,7 @@ namespace TicTacToe.Foundation.Games
                         InvokeGameStepCompleted(stepResult);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(placeFigureResult), $"There is no result of placing figure with this placeFigureCompletedResult: {placeFigureResult}");
+                        throw new ArgumentOutOfRangeException(nameof(placeFigureResult), $"Unknown placeFigureCompletedResult: {placeFigureResult}");
                 }
 
             } while (placeFigureResult != PlaceFigureResult.Success);
@@ -88,28 +113,6 @@ namespace TicTacToe.Foundation.Games
         private void MoveToNextPlayer()
         {
             _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
-        }
-
-        public GameResult Run()
-        {
-            GameResult gameResult;
-            do
-            {
-                MakeStep();
-                if (_winningStates.Any(el => el.IsWinning))
-                {
-                    gameResult = new WinGameResult(_players.ElementAt(_currentPlayerIndex));
-                    InvokeGameFinished(gameResult);
-
-                    return gameResult;
-                }
-                MoveToNextPlayer();
-            } while (_board.All(cell => !cell.IsEmpty));
-
-            gameResult = new DrawGameResult();
-            InvokeGameFinished(gameResult);
-
-            return gameResult;
         }
     }
 }

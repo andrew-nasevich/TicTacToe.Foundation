@@ -2,6 +2,6 @@
 {
     public interface IGameInputProvider
     {
-        void GetStepCoordinates(out int row, out int column, IPlayer player);
+        void GetNextCellPosition(out int row, out int column, IPlayer player);
     }
 }

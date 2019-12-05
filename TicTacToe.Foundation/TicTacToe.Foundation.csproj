@@ -93,10 +93,6 @@
       <Project>{6422df80-855a-4803-8232-bd04b8a2c8b6}</Project>
       <Name>TicTacToe.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TicTacToe\TicTacToe.csproj">
-      <Project>{d2e97ffb-5363-45ee-8e1a-5de0f057e5f6}</Project>
-      <Name>TicTacToe</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
