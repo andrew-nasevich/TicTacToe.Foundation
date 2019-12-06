@@ -6,6 +6,7 @@ namespace TicTacToe.Foundation.Interfaces
     public interface IPlayerRegistrationInputProvider
     {
         string GeyPlayerName();
+
         FigureType GetPlayerFigure(IReadOnlyCollection<FigureType> availableFigureTypes);
     }
 }
