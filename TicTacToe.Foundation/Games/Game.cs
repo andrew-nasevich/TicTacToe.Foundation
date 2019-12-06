@@ -35,12 +35,13 @@ namespace TicTacToe.Foundation.Games
             IWinningStateFactory winningStateFactory)
         {
             _gameInputProvider = gameInputProvider;
-            _players = gameConfiguration.Players.ToList();
+            var players = gameConfiguration.Players.ToList();
+            _players = players;
 
             _board = (IBoardInternal)boardFactory.CreateBoard(gameConfiguration.BoardSize);
             _winningStates = winningStateFactory.CreateWinningStatesCollection(_board);
 
-            _currentPlayerIndex = _players.ToList().IndexOf(gameConfiguration.FirstStepPlayer);
+            _currentPlayerIndex = players.IndexOf(gameConfiguration.FirstStepPlayer);
         }
 
 
@@ -53,7 +54,7 @@ namespace TicTacToe.Foundation.Games
                 if (_winningStates.Any(ws => ws.IsWinning))
                 {
                     gameResult = new WinGameResult(CurrentPlayer);
-                    InvokeGameFinished(gameResult);
+                    OnGameFinished(gameResult);
 
                     return gameResult;
                 }
@@ -61,19 +62,19 @@ namespace TicTacToe.Foundation.Games
             } while (_board.All(cell => !cell.IsEmpty));
 
             gameResult = new DrawGameResult();
-            InvokeGameFinished(gameResult);
+            OnGameFinished(gameResult);
 
             return gameResult;
         }
 
 
-        private void InvokeGameFinished(GameResult gameResult)
+        private void OnGameFinished(GameResult gameResult)
         {
             var gameFinishedEventArgs = new GameFinishedEventArgs(gameResult);
             GameFinished.Raise(this, gameFinishedEventArgs);
         }
 
-        private void InvokeGameStepCompleted(StepResult stepResult)
+        private void OnGameStepCompleted(StepResult stepResult)
         {
             var gameStepCompletedEventArgs = new GameStepCompletedEventArgs(stepResult);
             GameStepCompleted.Raise(this, gameStepCompletedEventArgs);
@@ -82,29 +83,30 @@ namespace TicTacToe.Foundation.Games
         private void MakeStep()
         {
             PlaceFigureResult placeFigureResult;
+            var currentPlayer = CurrentPlayer;
             do
             {
-                _gameInputProvider.GetNextCellPosition(out var row, out var column, CurrentPlayer);
+                _gameInputProvider.GetNextCellPosition(out var row, out var column, currentPlayer);
 
-                placeFigureResult = _board.PlaceFigure(row, column, CurrentPlayer.FigureType);
+                placeFigureResult = _board.PlaceFigure(row, column, currentPlayer.FigureType);
 
                 StepResult stepResult;
                 switch (placeFigureResult)
                 {
                     case PlaceFigureResult.Success:
                         stepResult = new SuccessStepResult();
-                        InvokeGameStepCompleted(stepResult);
+                        OnGameStepCompleted(stepResult);
                         break;
                     case PlaceFigureResult.CellIsAlreadyFilled:
                         stepResult = new CellIsAlreadyFilledStepResult(_board[row, column]);
-                        InvokeGameStepCompleted(stepResult);
+                        OnGameStepCompleted(stepResult);
                         break;
                     case PlaceFigureResult.InvalidCellPosition:
                         stepResult = new InvalidCellPositionStepResult(row, column);
-                        InvokeGameStepCompleted(stepResult);
+                        OnGameStepCompleted(stepResult);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(placeFigureResult), $"Unknown placeFigureCompletedResult: {placeFigureResult}");
+                        throw new ArgumentOutOfRangeException(nameof(placeFigureResult), $"Unknown placeFigureResult: {placeFigureResult}");
                 }
 
             } while (placeFigureResult != PlaceFigureResult.Success);
