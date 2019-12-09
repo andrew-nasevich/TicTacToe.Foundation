@@ -56,9 +56,9 @@
     <Compile Include="Figures\Circle.cs" />
     <Compile Include="Figures\Cross.cs" />
     <Compile Include="Figures\FigureType.cs" />
+    <Compile Include="Interfaces\IConsole.cs" />
     <Compile Include="Interfaces\IFigure.cs" />
     <Compile Include="Interfaces\IFigureFactory.cs" />
-    <Compile Include="Interfaces\IPlayerRegistrationInputProvider.cs" />
     <Compile Include="Interfaces\IPlayerFactory.cs" />
     <Compile Include="Interfaces\IPlayerRegistrationService.cs" />
     <Compile Include="Interfaces\IWinningState.cs" />

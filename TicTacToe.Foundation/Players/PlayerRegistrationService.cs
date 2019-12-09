@@ -8,36 +8,54 @@ namespace TicTacToe.Foundation.Players
 {
     public class PlayerRegistrationService : IPlayerRegistrationService
     {
-        private readonly IPlayerRegistrationInputProvider _playerRegistrationInputProvider;
         private readonly IPlayerFactory _playerFactory;
-
-        public ICollection<FigureType> AvailableFigureTypes { get; }
+        private readonly IConsole _console;
 
 
         public PlayerRegistrationService(
-            IPlayerRegistrationInputProvider playerRegistrationInputProvider, 
-            IPlayerFactory playerFactory, 
-            ICollection<FigureType> availableFigureTypes)
-        {
-            _playerRegistrationInputProvider = playerRegistrationInputProvider;
+            IPlayerFactory playerFactory,
+            IConsole console)
+        { 
             _playerFactory = playerFactory;
-            AvailableFigureTypes = availableFigureTypes;
+            _console = console;
         }
 
 
-        public IPlayer RegisterPlayer()
+        public IPlayer RegisterPlayer(ICollection<FigureType> availableFigureTypes)
         {
-            if (!AvailableFigureTypes.Any())
+            _console.WriteLine("Please, enter player's name: ");
+            var name = _console.ReadLine();
+            var figureType = ChooseFigure(availableFigureTypes);
+
+            return _playerFactory.CreatePlayer(name, figureType);
+        }
+
+
+        private FigureType ChooseFigure(ICollection<FigureType> availableFigureTypes)
+        {
+            if (!availableFigureTypes.Any())
             {
                 throw new InvalidOperationException("There is no more available figure types");
             }
+            if (availableFigureTypes.Count == 1)
+            {
+                _console.WriteLine($"There is only one figure type left. You figure type: {availableFigureTypes.First().ToString().ToUpper()}");
 
-            var name = _playerRegistrationInputProvider.GeyPlayerName();
-            var figureType = _playerRegistrationInputProvider.GetPlayerFigure(AvailableFigureTypes.ToList());
+                return availableFigureTypes.Single();
+            }
 
-            AvailableFigureTypes.Remove(figureType);
+            _console.WriteLine("Available figures types:");
+            var figureTypes = availableFigureTypes.Select(ft => ft.ToString().ToUpper()).ToList();
+            figureTypes.ForEach(ft => _console.WriteLine(ft));
 
-            return _playerFactory.CreatePlayer(name, figureType);
+            string chosenFigureType;
+            do
+            {
+                _console.WriteLine("Please, write your figure type:");
+                chosenFigureType = _console.ReadLine().ToUpper();
+            } while (figureTypes.Any(ft => ft.Equals(chosenFigureType)));
+
+            return availableFigureTypes.ElementAt(figureTypes.IndexOf(chosenFigureType));
         }
     }
 }

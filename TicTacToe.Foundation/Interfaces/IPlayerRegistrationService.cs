@@ -5,9 +5,6 @@ namespace TicTacToe.Foundation.Interfaces
 {
     public interface IPlayerRegistrationService
     {
-        ICollection<FigureType> AvailableFigureTypes { get; }
-
-
-        IPlayer RegisterPlayer();
+        IPlayer RegisterPlayer(ICollection<FigureType> availableFigureTypes);
     }
 }
