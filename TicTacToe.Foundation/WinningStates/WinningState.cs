@@ -22,6 +22,12 @@ namespace TicTacToe.Foundation.WinningStates
                                  && (_isWinning = IsOneType).Value;
 
 
+        public IReadOnlyCollection<ICell> GetWinningCollection()
+        {
+            return _isWinning.HasValue && _isWinning.Value ? _cells : null;
+        }
+
+
         protected WinningState(IBoard board, Func<ICell, bool> predicate)
         {
             _cells = board.Where(predicate).ToList();

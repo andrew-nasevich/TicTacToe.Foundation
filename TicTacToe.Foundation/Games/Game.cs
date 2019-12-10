@@ -51,9 +51,11 @@ namespace TicTacToe.Foundation.Games
             do
             {
                 MakeStep();
-                if (_winningStates.Any(ws => ws.IsWinning))
+
+                var winningCombination = _winningStates.SingleOrDefault(ws => ws.IsWinning);
+                if (winningCombination != null)
                 {
-                    gameResult = new WinGameResult(CurrentPlayer);
+                    gameResult = new WinGameResult(CurrentPlayer, winningCombination.GetWinningCollection());
                     OnGameFinished(gameResult);
 
                     return gameResult;
