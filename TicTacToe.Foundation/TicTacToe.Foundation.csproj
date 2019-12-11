@@ -47,6 +47,7 @@
     <Compile Include="Cells\Cell.cs" />
     <Compile Include="Cells\CellFactory.cs" />
     <Compile Include="GameConfigurations\GameConfiguration.cs" />
+    <Compile Include="GameConfigurations\GameConfigurationFactory.cs" />
     <Compile Include="Games\GameResults\DrawGameResult.cs" />
     <Compile Include="Games\GameResults\GameFinishedEventArgs.cs" />
     <Compile Include="Games\GameResults\GameResult.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Interfaces\IFigureFactory.cs" />
     <Compile Include="Interfaces\IGame.cs" />
     <Compile Include="Interfaces\IGameConfiguration.cs" />
+    <Compile Include="Interfaces\IGameConfigurationFactory.cs" />
     <Compile Include="Interfaces\IGameInputProvider.cs" />
     <Compile Include="Interfaces\IWinningState.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
