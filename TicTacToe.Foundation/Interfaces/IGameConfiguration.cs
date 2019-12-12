@@ -6,8 +6,8 @@ namespace TicTacToe.Foundation.Interfaces
     {
         int BoardSize { get; }
 
-        IPlayer FirstStepPlayer { get; }
-
         IReadOnlyCollection<IPlayer> Players { get; }
+
+        IPlayer FirstStepPlayer { get; }
     }
 }

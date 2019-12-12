@@ -5,9 +5,9 @@ namespace TicTacToe.Foundation.GameConfigurations
 {
     public class GameConfigurationFactory : IGameConfigurationFactory
     {
-        public IGameConfiguration CreateGameConfiguration(int boardSize, IPlayer firstStepPlayer, IReadOnlyCollection<IPlayer> players)
+        public IGameConfiguration CreateGameConfiguration(int boardSize, IReadOnlyCollection<IPlayer> players, IPlayer firstStepPlayer)
         {
-            return new GameConfiguration(boardSize, firstStepPlayer, players);
+            return new GameConfiguration(boardSize, players, firstStepPlayer);
         }
     }
 }
