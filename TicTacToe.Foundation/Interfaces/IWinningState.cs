@@ -4,8 +4,8 @@ namespace TicTacToe.Foundation.Interfaces
 {
     public interface IWinningState
     {
-        bool IsWinning { get; }
+        IReadOnlyCollection<ICell> Cells { get; }
 
-        IReadOnlyCollection<ICell> GetWinningCollection();
+        bool IsWinning { get; }
     }
 }

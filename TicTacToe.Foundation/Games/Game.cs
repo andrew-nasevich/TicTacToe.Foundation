@@ -55,7 +55,7 @@ namespace TicTacToe.Foundation.Games
                 var winningCombination = _winningStates.SingleOrDefault(ws => ws.IsWinning);
                 if (winningCombination != null)
                 {
-                    gameResult = new WinGameResult(CurrentPlayer, winningCombination.GetWinningCollection());
+                    gameResult = new WinGameResult(CurrentPlayer, winningCombination.Cells);
                     OnGameFinished(gameResult);
 
                     return gameResult;
