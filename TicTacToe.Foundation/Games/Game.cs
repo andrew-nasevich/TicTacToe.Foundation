@@ -61,7 +61,7 @@ namespace TicTacToe.Foundation.Games
                     return gameResult;
                 }
                 MoveToNextPlayer();
-            } while (_board.All(cell => !cell.IsEmpty));
+            } while (_board.Any(cell => cell.IsEmpty));
 
             gameResult = new DrawGameResult();
             OnGameFinished(gameResult);
