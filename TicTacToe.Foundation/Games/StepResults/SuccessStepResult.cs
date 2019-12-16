@@ -1,11 +1,15 @@
-﻿namespace TicTacToe.Foundation.Games.StepResults
+﻿using TicTacToe.Foundation.Interfaces;
+
+namespace TicTacToe.Foundation.Games.StepResults
 {
     public class SuccessStepResult : StepResult
     {
-        public SuccessStepResult() 
+        public IBoard Board { get; }
+
+        public SuccessStepResult(IBoard board) 
             : base(StepResultType.Success)
         {
-
+            Board = board;
         }
     }
 }

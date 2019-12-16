@@ -96,7 +96,7 @@ namespace TicTacToe.Foundation.Games
                 switch (placeFigureResult)
                 {
                     case PlaceFigureResult.Success:
-                        stepResult = new SuccessStepResult();
+                        stepResult = new SuccessStepResult(_board);
                         OnGameStepCompleted(stepResult);
                         break;
                     case PlaceFigureResult.CellIsAlreadyFilled:
