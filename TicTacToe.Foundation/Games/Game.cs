@@ -52,10 +52,11 @@ namespace TicTacToe.Foundation.Games
             {
                 MakeStep();
 
-                var winningCombination = _winningStates.SingleOrDefault(ws => ws.IsWinning);
-                if (winningCombination != null)
+                var winningCombinations = _winningStates.Where(ws => ws.IsWinning).ToList();
+                if (winningCombinations.Any())
                 {
-                    gameResult = new WinGameResult(CurrentPlayer, winningCombination.Cells);
+                    var winningCells = winningCombinations.SelectMany(ws => ws.Cells).Distinct().ToList();
+                    gameResult = new WinGameResult(CurrentPlayer, winningCells);
                     OnGameFinished(gameResult);
 
                     return gameResult;
