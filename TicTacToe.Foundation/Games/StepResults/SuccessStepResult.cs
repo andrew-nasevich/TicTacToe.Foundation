@@ -6,6 +6,7 @@ namespace TicTacToe.Foundation.Games.StepResults
     {
         public IBoard Board { get; }
 
+
         public SuccessStepResult(IBoard board) 
             : base(StepResultType.Success)
         {

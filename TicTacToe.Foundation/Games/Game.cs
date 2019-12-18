@@ -52,7 +52,7 @@ namespace TicTacToe.Foundation.Games
             {
                 MakeStep();
 
-                var winningCombination = _winningStates.SingleOrDefault(ws => ws.IsWinning);
+                var winningCombination = _winningStates.FirstOrDefault(ws => ws.IsWinning);
                 if (winningCombination != null)
                 {
                     gameResult = new WinGameResult(CurrentPlayer, winningCombination.Cells);
